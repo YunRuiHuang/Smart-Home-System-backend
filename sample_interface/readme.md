@@ -26,6 +26,16 @@ docker run --name sample-mysql --network sample-network -p 3000:3306 -e MYSQL_RO
 #set up the last version mysql at port 3000
 ```
 
+**Fast reset**
+
+```shell
+docker rm sample-app
+docker rmi sample-app
+
+```
+
+
+
 
 
 ## Interface
@@ -149,6 +159,8 @@ router.use('/sample',sample); //use the interface and give a enterpoint
 module.exports=router;
 ```
 
+
+
 ### router with database
 
 **in the interface file**
@@ -176,6 +188,10 @@ router.get("/",(req,res)=>{
 
 module.exports=router; //end file
 ```
+
+
+
+### router with file access
 
 
 
