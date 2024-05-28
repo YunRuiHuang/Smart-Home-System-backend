@@ -1,0 +1,16 @@
+[Unit]
+Description=My playing music Application
+After=network.target remote-fs.target
+Wants=network-online.target
+RequiresMountsFor=/mnt/file/Music
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/play_music.py
+WorkingDirectory=/home/pi
+Restart=always
+User=pi
+Group=pi
+Environment=PATH=/usr/bin:/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
