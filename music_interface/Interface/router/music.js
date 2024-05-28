@@ -114,7 +114,7 @@ router.put("/status",(req,res)=>{
 })
 
 router.put("/rand",(req,res)=>{
-  playingList = shuffle(list)
+  playingList = shuffle(Array.from(list))
   res.status(200).send()
 })
 
