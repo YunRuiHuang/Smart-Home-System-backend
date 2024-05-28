@@ -49,7 +49,7 @@ cd ~/ICSI499Project/database
 docker build -t <interface-name> .
 #using the dockerfile to build a image in docker
 
-docker run --name <container-name> --network <network-name> -p <host-port>:3001 -d <interface-name>
+docker run --name <container-name> --network <network-name> -p <host-port>:3001 -d --restart always <interface-name>
 #set up the interface at port 3001, now you access localhost:3001/ you should see a test:"success" which means success setup the interface server
 
 ```
@@ -60,7 +60,7 @@ docker run --name <container-name> --network <network-name> -p <host-port>:3001 
 docker build -t sample-app .
 #using the dockerfile to build a image in docker
 
-docker run --name sample-app --network sample-network -p 3001:3000 -d sample-app
+docker run --name sample-app --network sample-network -p 3001:3000 -d --restart always sample-app
 #set up the interface at port 3001, now you access localhost:3001/ you should see a test:"success" which means success setup the interface server
 
 ```

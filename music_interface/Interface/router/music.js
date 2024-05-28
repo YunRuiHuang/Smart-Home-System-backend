@@ -97,7 +97,7 @@ router.get("/playing",(req,res)=>{
 
 router.get("/next",(req,res)=>{
   if(playingList.length == 0){
-    playingList = shuffle(list)
+    playingList = shuffle(Array.from(list))
   }
   playing = playingList[0]
   playingList.shift()

@@ -34,6 +34,6 @@ docker inspect <container_id_or_name> //get the container config
 ### MySQL
 
 ```shell
-docker run --name <container-name> --network <network-name> -p <host-port>:3306 -e MYSQL_ROOT_PASSWORD=<password> mysql
+docker run --name <container-name>--restart always --network <network-name> -p <host-port>:3306 -e MYSQL_ROOT_PASSWORD=<password> mysql
 ```
 
