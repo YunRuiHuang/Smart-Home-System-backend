@@ -1,0 +1,19 @@
+{
+    "connection":{
+        "connectionLimit": 10,
+        "host": "mysql",
+        "user": "root",
+        "password": "password"
+    },
+    "database":"bill_database",
+    "table_name":[
+        "bill_table"
+    ],
+    "tables":[
+        [
+            "CREATE TABLE bill_table (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, type VARCHAR(10), title VARCHAR(255), time TIMESTAMP, amount FLOAT)"
+        ]
+    ]
+    
+    
+}
