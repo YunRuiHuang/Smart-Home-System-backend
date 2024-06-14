@@ -1,0 +1,24 @@
+{
+    "connection":{
+        "connectionLimit": 10,
+        "host": "mysql",
+        "user": "root",
+        "password": "password"
+    },
+    "database":"item_database",
+    "table_name":[
+        "type_table",
+        "data_table"
+    ],
+    "tables":[
+        [
+            "CREATE TABLE type_table (typeID INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL,unit VARCHAR(10));"
+        ],
+        [
+            "CREATE TABLE data_table (recodeID INT AUTO_INCREMENT PRIMARY KEY,typeID INT,IO VARCHAR(5) NOT NULL,value FLOAT);",
+            "ALTER TABLE data_table ADD FOREIGN KEY (typeID) REFERENCES type_table(typeID);"
+        ]
+    ]
+    
+    
+}

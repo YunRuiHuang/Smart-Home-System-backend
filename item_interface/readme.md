@@ -57,10 +57,10 @@ docker run --name <container-name> --network <network-name> -p <host-port>:3001 
 **Sample**
 
 ```shell
-docker build -t sample-app .
+docker build -t items-app .
 #using the dockerfile to build a image in docker
 
-docker run --name sample-app --network sample-network -p 3001:3000 -d --restart always sample-app
+docker run --name items-app --network sample-network -p 3004:3000 -d --restart always items-app
 #set up the interface at port 3001, now you access localhost:3001/ you should see a test:"success" which means success setup the interface server
 
 ```

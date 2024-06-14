@@ -22,7 +22,7 @@ docker run --name <container-name> --network <network-name> -p <host-port>:3306 
 docker network create sample-network
 #setup a local network for docker
 
-docker run --name mysql --network sample-network -p 3000:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql 
+docker run --name mysql --network sample-network -p 3000:3306 --restart always -e MYSQL_ROOT_PASSWORD=password -d mysql 
 #set up the last version mysql at port 3000
 ```
 
