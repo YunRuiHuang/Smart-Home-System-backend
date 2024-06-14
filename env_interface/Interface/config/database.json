@@ -1,0 +1,19 @@
+{
+    "connection":{
+        "connectionLimit": 10,
+        "host": "mysql",
+        "user": "root",
+        "password": "password"
+    },
+    "database":"env_database",
+    "table_name":[
+        "env_table"
+    ],
+    "tables":[
+        [
+            "CREATE TABLE env_table (recodeID INT AUTO_INCREMENT PRIMARY KEY,machineID INT NOT NULL,time TIMESTAMP NOT NULL,temp FLOAT NOT NULL,humi FLOAT NOT NULL,light INT NOT NULL);"
+        ]
+    ]
+    
+    
+}
