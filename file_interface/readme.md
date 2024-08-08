@@ -1,0 +1,222 @@
+# Sample Interface
+
+Include A MYSQL database and a Express JS web API interface 
+
+## SMB connect
+
+### Shell script file
+
+under Interface folder
+
+*mount_smb.sh*
+
+```shell
+#!/bin/bash
+
+mkdir public/share
+mount -t cifs -o username=<smb_username>,password=<smb_password> //<smb_server>/<share_name> public/share
+```
+
+
+
+## Interface
+
+### Docker setup
+
+```shell
+cd ~/ICSI499Project/database
+#move to the database file, you should see a Dockerfile
+
+docker build -t <interface-name> .
+#using the dockerfile to build a image in docker
+
+docker run --name <container-name> --network <network-name> -p <host-port>:3001 -d --restart always <interface-name>
+#set up the interface at port 3001, now you access localhost:3001/ you should see a test:"success" which means success setup the interface server
+
+```
+
+**Fast reset**
+
+```shell
+docker rm sample-app
+docker rmi sample-app
+
+```
+
+
+
+**Sample**
+
+```shell
+docker build -t file-app .
+#using the dockerfile to build a image in docker
+
+docker run --privileged --name file-app --network sample-network -p 3006:3000 -d --restart always file-app
+#set up the interface at port 3001, now you access localhost:3001/ you should see a test:"success" which means success setup the interface server
+#use --privileged to allow docker access the SMB share
+```
+
+
+
+### Config file
+
+
+
+```json
+{
+    "connection":{
+        "connectionLimit": 10,
+        "host": "<container-name>", //mys
+        "user": "root",
+        "password": "<password>"
+    },
+    "database":"<database-name>",
+    "table_name":[
+        "<table-name>", //first table name
+        "<table-name>"  //second table name
+    ],
+    "tables":[
+        [ //first table
+            "CREATE TABLE <table-name> ...",
+            "ALTER TABLE <table-name> ...",
+            "ALTER TABLE <table-name> ..."
+        ],
+        [ //second table
+            "CREATE TABLE <table-name> ..."
+        ]
+    ]
+    
+}
+```
+
+**Sample**
+
+```json
+{
+    "connection":{
+        "connectionLimit": 10,
+        "host": "sample-mysql",
+        "user": "root",
+        "password": "password"
+    },
+    "usertable": [
+        "CREATE TABLE users (user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,user_name VARCHAR(50) NOT NULL,real_name VARCHAR(50),email VARCHAR(100) NOT NULL,location VARCHAR(200) NOT NULL,profile_img_id VARCHAR(100),bio TEXT,password VARCHAR(64) NOT NULL,has_items_list BOOLEAN NOT NULL DEFAULT false,other_info VARCHAR(200))",
+        "ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email)",
+        "ALTER TABLE users ADD CONSTRAINT check_password_length CHECK (LENGTH(password) = 64)"
+    ],
+    "itemtable":[
+        "CREATE TABLE items (item_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,user_id INT NOT NULL,item_name VARCHAR(50) NOT NULL,item_keywords VARCHAR(200),item_location VARCHAR(200) NOT NULL,item_description TEXT,item_img_id VARCHAR(100),other_info VARCHAR(200))",
+        "ALTER TABLE items ADD CONSTRAINT unique_item_name UNIQUE (user_id, item_name)",
+        "ALTER TABLE items ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)"
+    ],
+    "keywordmaptable":[
+        "CREATE TABLE keyword_map (keyword_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,keyword VARCHAR(20) NOT NULL,item_id INT NOT NULL)"
+    ]
+    
+}
+```
+
+
+
+## Code
+
+### basic router
+
+**in the interface file**
+
+```javascript
+//import the two base packet
+const express = require('express');
+const router = express.Router();
+
+//a basic get interface
+router.get('/',(req,res)=>{res.json({test:"success"})});
+
+//export the router to allow router to use it
+//at the end of file
+module.exports=router;
+```
+
+**in the router.js file**
+
+```javascript
+const express = require('express');
+const router = express.Router();
+
+//add interface here
+const sample = require('./router/sample_router'); //load the interface file
+router.use('/sample',sample); //use the interface and give a enterpoint
+
+module.exports=router;
+```
+
+
+
+### router with database
+
+**in the interface file**
+
+```javascript
+const express = require('express');
+const router = express.Router();
+const SQL = require('./SQLoperate') // import this file as database interface
+
+//.... some other code
+
+//sample of use interface 
+router.get("/",(req,res)=>{
+  var sql = "SELECT * FROM sample_table;"; //create a sql 
+
+  //use the interface to run this sql and get result
+  SQL.runsql(sql).then((result)=>{
+      res.status(200).json(result);
+  },(err)=>{
+      res.status(400).json(err);
+  })
+});
+
+//....
+
+module.exports=router; //end file
+```
+
+
+
+### router with file access
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

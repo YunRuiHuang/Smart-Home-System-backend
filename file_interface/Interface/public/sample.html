@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>sample html</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loader</title>
+    <style>
+        #imageContainer img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>sample html</h1>
+    <h2>File Upload</h2>
+    <form action="/file" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>access file</h2>
+    <input type="text" id="filenameInput" placeholder="Enter image filename" />
+    <button onclick="loadImage()">Load Image</button>
+
+
+    <div id="imageContainer"></div>
+
+
+    <h1>Video Player</h1>
+    <video controls width="800">
+        <source src="/file/video" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</body>
+
+<script>
+  function loadImage() {
+    const filename = document.getElementById('filenameInput').value;
+    const imageUrl = `/file?fileName=${encodeURIComponent(filename)}`;
+
+    // Fetch the image from the server
+    fetch(imageUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob(); // Get the image as a blob
+        })
+        .then(blob => {
+            // Create a URL for the blob
+            const imageObjectURL = URL.createObjectURL(blob);
+
+            // Create an image element and set the src to the blob URL
+            const img = document.createElement('img');
+            img.src = imageObjectURL;
+
+            // Display the image in the image container
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = ''; // Clear any previous image
+            imageContainer.appendChild(img);
+        })
+        .catch(error => {
+            console.error('Error loading image:', error);
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = 'Failed to load image';
+        });
+  }
+
+</script>
+
+</html>
